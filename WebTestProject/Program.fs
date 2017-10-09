@@ -2,6 +2,20 @@
 open runner
 open FSharp.Data.Sql
 
+let [<Literal>] ConnectionString = "Data Source=localhost;Initial Catalog=NavcareDB_interface;Integrated Security=True; "
+type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
+let ctx = Sql.GetDataContext()
+
+let usr, ptn, dem = 
+    query {
+        for usr in ctx.Dbo.AspNetUsers do
+        for ptn in usr.``ptn.Patients by Id`` do
+        for dem in ptn.``ptn.PatientDemographics by Id`` do
+        where (ptn.Id = 6666)
+        where (usr.NameComputed.IsSome)
+        select (usr, ptn, dem)
+        exactlyOne
+    }
 
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
