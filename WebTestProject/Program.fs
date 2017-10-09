@@ -1,5 +1,7 @@
 ﻿open canopy
 open runner
+open FSharp.Data.Sql
+
 
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
