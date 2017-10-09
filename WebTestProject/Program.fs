@@ -1,24 +1,11 @@
 ﻿open canopy
-open runner
-open FSharp.Data.Sql
-
-let [<Literal>] ConnectionString = "Data Source=localhost;Initial Catalog=NavcareDB_interface;Integrated Security=True; "
-type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
-let ctx = Sql.GetDataContext()
-
-let usr, ptn, dem = 
-    query {
-        for usr in ctx.Dbo.AspNetUsers do
-        for ptn in usr.``ptn.Patients by Id`` do
-        for dem in ptn.``ptn.PatientDemographics by Id`` do
-        where (ptn.Id = 6666)
-        where (usr.NameComputed.IsSome)
-        select (usr, ptn, dem)
-        exactlyOne
-    }
+open Main
+open OpenQA.Selenium
 
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
+
+SetupUser()
 
 "User Logins in, and sees the main navigation bar" &&& fun _ ->
     url "https://localhost:44336/"
@@ -27,22 +14,34 @@ start chrome
     click "#SetPasswordSubmitImg"
     displayed "#mainNav"
 
-"Verify Patient First Name, Last Name, and Gender exist and are set" &&& fun _ ->
+"Verify Patient data" &&& fun _ ->
     click "a[href='/people']"
-    "#patientsGridView_DXFREditorcol2_I" << "stevens, joseph"
+    "#patientsGridView_DXFREditorcol2_I" << FullName
     press enter
-    click "#patient_link_1"
-    click "#PopupPacient_1_PWC-1 > div > button > span"
-    click "#ejControl_3_hidden"                                         
-    click "#ejControl_3_popup > div.e-content > ul > li:nth-child(1)"
-    click "#ejControl_5_hidden"
+    click "#patientsGridView_tccell0_2 > a"
+    click (first ".btn.btn-sm.btn-success.fa.fa-user")
+    "#MiddleId" << "Test"
+    click "#SexTypeId"                                         
     click "#ejControl_5_popup > div > ul > li:nth-child(1)"
-    click "#SubmitId"
-    "#FirstId" == "Joseph"
-    "#LastId" == "Stevens"
-    "#ejControl_3_hidden" == "1st Lt"
-    "#ejControl_5_hidden" == "Male"
+    click "#SexualOrientationId"
+    click "#ejControl_6_popup > div.e-content > ul > li:nth-child(2)"
 
+    click "#SubmitId"
+
+    notDisplayed "#alertMessage"
+
+    click "#PatientLanguagesMap0_hidden"
+    click "#PatientLanguagesMap0_popup > div.e-content > ul > li:nth-child(1)"
+
+    click "#SubmitId"
+
+    press Keys.F5
+    
+    "#MiddleId" == "Test"
+    "#SexTypeId" == "Male"
+    "#SexualOrientationId" == "Straight or heterosexual"
+    "#PatientLanguagesMap0_hidden" == "English"
+    
 run()
 
 printfn "press [enter] to exit"
