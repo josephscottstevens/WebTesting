@@ -1,6 +1,5 @@
 ﻿open canopy
 open runner
-open System
 
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
