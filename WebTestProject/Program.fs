@@ -1,11 +1,11 @@
 ﻿open canopy
 open Main
 
+let UserName = SetupUser()
+
 elementTimeout <- 30.0
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
-
-SetupUser()
 
 "User Logins in, and sees the main navigation bar" &&& fun _ ->
     url "https://localhost:44336/"
@@ -16,7 +16,7 @@ SetupUser()
 
 "Verify Patient data" &&& fun _ ->
     click "a[href='/people']"
-    "#patientsGridView_DXFREditorcol2_I" << FullName
+    "#patientsGridView_DXFREditorcol2_I" << UserName
     press enter
     click "#patientsGridView_tccell0_2 > a"
     click ".btn.btn-sm.btn-success.fa.fa-user"
