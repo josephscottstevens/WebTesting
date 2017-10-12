@@ -1,7 +1,7 @@
 ﻿open canopy
 open Main
 
-let UserName = SetupUser()
+let UserName = SetupTestUser()
 
 //elementTimeout <- 30.0
 chromeDir <- __SOURCE_DIRECTORY__
@@ -25,18 +25,15 @@ start chrome
     "#MiddleId" << "Test"
     "#SSNId" << "000112222"
     "#DateOfBirth" << "10/27/1988"
-    click "#MainProviderId"
-    click "#ejControl_3_popup > div > ul > li > span"
-    click "#SexTypeId"                                         
-    click "#ejControl_7_popup > div > ul > li:nth-child(1)"
+    click "#SexTypeId_hidden"                                         
+    click "#SexTypeId_popup > div > ul > li:nth-child(1) > span"
     click "#LanguageId0_hidden"
-    click "#LanguageId0_popup > div.e-content > ul > li:nth-child(2)"
+    click "#LanguageId0_popup > div.e-content > ul > li:nth-child(2) > span"
     click "#SubmitId"
     reload()
     "#MiddleId" == "Test"
-    "#SexTypeId" == "Male"
+    "#SexTypeId_hidden" == "Male"
     "#LanguageId0_hidden" == "Afar"
-    "#MainProviderId" == "Brown, Rush"
 run()
 
 printfn "press [enter] to exit"
