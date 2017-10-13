@@ -5,7 +5,6 @@ open System
 let [<Literal>] ConnectionString = "Data Source=localhost;Initial Catalog=NavcareDB_interface;Integrated Security=True; "
 type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
 
-//let newUserName = "TestUser@uscarenet.com"
 let newUserId = System.Guid.NewGuid().ToString()
 
 // Note, need to disable trigger on ptn.Patient
@@ -37,7 +36,19 @@ let SetupUser _ =
     usr.FirstName <- Some "Test"
     usr.LastName <- Some "User"
     ctx.SubmitUpdates()
-    ()
+    
+
+let CleanUpUser _ =
+    let ctx = Sql.GetDataContext()
+    match ctx.Ptn.Patients |> Seq.where(fun t-> t.UserId = newUserId) |> Seq.tryHead with
+    | Some ptn ->
+        match ctx.Ptn.ProvidersPatientsMap |> Seq.where (fun t-> t.PatientId = Some ptn.Id) |> Seq.tryHead with
+        | Some prov -> prov.Delete()
+        | None -> ()
+    | None -> ()
+    match ctx.Dbo.AspNetUsers |> Seq.where (fun t-> t.Id = newUserId) |> Seq.tryHead with
+    | Some usr -> usr.Delete()
+    | None -> ()
 
 let SetupTestUser _ =
     SetupUser()

@@ -39,4 +39,5 @@ run()
 printfn "press [enter] to exit"
 System.Console.ReadLine() |> ignore
 
+CleanUpUser()
 quit()
