@@ -57,6 +57,7 @@
   <Import Project="$(FSharpTargetsPath)" />
   <ItemGroup>
     <Compile Include="Main.fs" />
+    <Compile Include="Demographics.fs" />
     <Compile Include="AssemblyInfo.fs" />
     <None Include="App.config" />
     <Content Include="packages.config" />
@@ -66,6 +67,8 @@
     <None Include="chromedriver.exe">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Compile Include="SkillChecking.fs" />
+    <Compile Include="Example.fs" />
     <Compile Include="Program.fs" />
     <None Include="readme" />
   </ItemGroup>
