@@ -7,7 +7,7 @@ chromeDir <- __SOURCE_DIRECTORY__
 start chrome
 
 runExample()
-runSkillChecking
+//runSkillChecking
 
 run()
 System.Console.WriteLine("Press any key to continue")
