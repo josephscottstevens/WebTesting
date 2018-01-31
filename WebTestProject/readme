@@ -10,5 +10,6 @@ type:	 cd C:WebTesting
 type:	 git clone https://github.com/josephscottstevens/WebTesting.git
 type:    WebTestProject.sln
 open:	 program.fs
-
-Replace email and password with your email\password, and press Start (or F5)
+replace: let email = "..." with your email
+replace: let password = "..." with your password
+press:   F5
