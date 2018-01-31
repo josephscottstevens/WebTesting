@@ -79,6 +79,9 @@
     <Reference Include="FSharp.Core">
       <HintPath>..\packages\FSharp.Core.4.2.3\lib\net45\FSharp.Core.dll</HintPath>
     </Reference>
+    <Reference Include="FSharp.Data">
+      <HintPath>..\packages\FSharp.Data.2.4.4\lib\net45\FSharp.Data.dll</HintPath>
+    </Reference>
     <Reference Include="FSharp.Data.SqlProvider">
       <HintPath>..\packages\SQLProvider.1.1.11\lib\FSharp.Data.SqlProvider.dll</HintPath>
     </Reference>
@@ -87,6 +90,7 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Numerics" />
+    <Reference Include="System.Xml.Linq" />
     <Reference Include="WebDriver">
       <HintPath>..\packages\Selenium.WebDriver.3.5.2\lib\net40\WebDriver.dll</HintPath>
     </Reference>
