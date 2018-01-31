@@ -66,6 +66,7 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Compile Include="Program.fs" />
+    <None Include="readme" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="canopy">

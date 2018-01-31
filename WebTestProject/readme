@@ -1,0 +1,14 @@
+﻿open:    Command prompt
+type:    git
+if:      you get a bunch of stuff talking about git, ignore next step
+go to:   web browser
+open:	 https://github.com/git-for-windows/git/releases/download/v2.16.1.windows.1/Git-2.16.1-64-bit.exe
+install: Git-2.16.1-64-bit.exe
+open:	 Command Prompt
+type:    mkdir C:\WebTesting
+type:	 cd C:WebTesting
+type:	 git clone https://github.com/josephscottstevens/WebTesting.git
+type:    WebTestProject.sln
+open:	 program.fs
+
+Replace email and password with your email\password, and press Start (or F5)
