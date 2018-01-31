@@ -6,9 +6,11 @@ open:	 https://github.com/git-for-windows/git/releases/download/v2.16.1.windows.
 install: Git-2.16.1-64-bit.exe
 open:	 Command Prompt
 type:    mkdir C:\WebTesting
-type:	 cd C:WebTesting
+type:	 cd .. .. ..
 type:	 git clone https://github.com/josephscottstevens/WebTesting.git
+type:    cd C:\WebTesting"
 type:    WebTestProject.sln
+if:		 you get popup F# tools, install them
 open:	 program.fs
 replace: let email = "..." with your email
 replace: let password = "..." with your password
