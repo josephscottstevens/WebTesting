@@ -71,6 +71,7 @@
     <Compile Include="Example.fs" />
     <Compile Include="Program.fs" />
     <None Include="readme" />
+    <None Include="Opportunities.csv" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="canopy">
