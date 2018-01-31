@@ -2,6 +2,7 @@
 open Example
 open SkillChecking
 
+elementTimeout <- 2.0
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
 
@@ -9,5 +10,6 @@ start chrome
 runSkillChecking
 
 run()
+System.Console.WriteLine("Press any key to continue")
 System.Console.ReadLine() |> ignore
 quit()

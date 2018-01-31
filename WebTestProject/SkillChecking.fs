@@ -2,6 +2,7 @@
 
 open canopy
 open System
+open Main
 
 let runSkillChecking =
     let urls = 
@@ -11,6 +12,7 @@ let runSkillChecking =
         ]
     let mutable i = 0
     let mutable skills = []
+    let mutable skillsAndUrls = []
 
     many urls.Length (fun _ ->
         url urls.[i]
@@ -19,11 +21,15 @@ let runSkillChecking =
                 read "#Skills > div:nth-child(3) > div > div > div > div:nth-child(1) > div.col-xs-14.col-sm-12 > strong"
             with _ ->
                 ""
-        i <- i + 1
         skills <- skill :: skills
+        skillsAndUrls <- (urls.[i], skill) :: skillsAndUrls
+        
+        i <- i + 1
     )
 
     lastly (fun _ ->
+        let somePatient = ctxTest4.Ptn.Patients.Individuals.``100``
         Console.WriteLine(skills)
+        Console.WriteLine(skillsAndUrls)
         ()
     )
