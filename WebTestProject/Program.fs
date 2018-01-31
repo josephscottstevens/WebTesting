@@ -6,7 +6,7 @@ elementTimeout <- 2.0
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
 
-runExample()
+runExample
 //runSkillChecking
 
 run()
