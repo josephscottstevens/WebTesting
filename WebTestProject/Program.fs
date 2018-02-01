@@ -3,13 +3,13 @@ open Example
 open Demographics
 open SkillChecking
 
-elementTimeout <- 2.0
+//elementTimeout <- 2.0
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
 
 //runExample
-runSkillChecking
-//runDemographics
+//runSkillChecking
+runDemographics
 
 run()
 System.Console.WriteLine("Press any key to continue")
