@@ -23,6 +23,8 @@ let runSkillChecking =
             skills <- urls.[i].CHRON01600 :: skills
         else if skill.IsNone then
             skills <- urls.[i].CHRON01600 :: skills
+        else if skill.IsSome && skill.Value.GetCssValue("Display") <> "none" && skill.Value.Text = "Home Health Aide, Personal Care Aide" then 
+            skills <- urls.[i].CHRON01600 :: skills
         i <- i + 1
     )
 
@@ -31,3 +33,4 @@ let runSkillChecking =
         
         File.WriteAllText("C:\Cognauto\Automation Output\Ultiprofiles\OpportunitiesOutput.csv", allRows)
     )
+    
