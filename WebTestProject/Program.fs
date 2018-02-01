@@ -1,5 +1,6 @@
 ﻿open canopy
 open Example
+open Demographics
 open SkillChecking
 
 elementTimeout <- 2.0
@@ -8,6 +9,7 @@ start chrome
 
 //runExample
 runSkillChecking
+//runDemographics
 
 run()
 System.Console.WriteLine("Press any key to continue")
