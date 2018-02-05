@@ -1,16 +1,26 @@
 ﻿module SkillChecking
 
+open Main
 open canopy
 open System
 open System.IO
 open FSharp.Data
 
 let runSkillChecking =
-    let opportunities = new CsvProvider<"C:\Cognauto\Automation Output\Ultiprofiles\Opportunities.csv", HasHeaders=false>()
+    let opportunities = new CsvProvider<"R:\IT\CognautoFiles\Output\Opportunities", HasHeaders=false>()
     let urls = opportunities.Rows |> Seq.toArray
 
     let mutable i = 0
     let mutable skills = []
+
+    before (fun _ -> 
+        let ctx = SqlTest4.GetDataContext()
+        let newUrl = ctx.Dbo.HrOpportunityUrls.Create() 
+        newUrl.OpportunityNumber <- "Test"
+        newUrl.OpportunityUrl <- Some"Test"   //optional field
+        ctx.SubmitUpdates()
+
+    )
 
     many urls.Length (fun _ ->
         url urls.[i].Column2
