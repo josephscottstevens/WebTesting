@@ -61,6 +61,6 @@ let runSkillChecking =
 
         
 
-        File.WriteAllText("C:\Cognauto\Automation Output\Ultiprofiles\OpportunitiesOutput.csv", allRows)
+        File.WriteAllText("C:\Cognauto\AutomationOutput\Ultiprofiles\OpportunitiesOutput.csv", allRows)
     )
     
