@@ -54,13 +54,13 @@ let runSkillChecking =
         )
         |> ignore
         
-        let allRows = 
-            skills
-            |> List.map (fun (t, y) -> t + "," + y)
-            |> List.reduce(fun t y -> t + "\n" + y) 
+        //let allRows = 
+            //skills
+            //|> List.map (fun (t, y) -> t + "," + y)
+            //|> List.reduce(fun t y -> t + "\n" + y) 
 
         
 
-        File.WriteAllText("C:\Cognauto\Automation Output\Ultiprofiles\OpportunitiesOutput.csv", allRows)
+        //File.WriteAllText("C:\Cognauto\Automation Output\Ultiprofiles\OpportunitiesOutput.csv", allRows)
     )
     
