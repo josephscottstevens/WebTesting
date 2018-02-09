@@ -15,7 +15,7 @@ let main _ =
     |> Seq.map(fun t-> t.Race.Value)
     |> Seq.countBy (fun t -> t)
     |> Seq.sortByDescending snd
-    |> Seq.take 5
+    |> Seq.take 5 
     |> Chart.Column
     |> Chart.WithTitle "Most common Race\Ethnicity"
     |> Chart.Show
