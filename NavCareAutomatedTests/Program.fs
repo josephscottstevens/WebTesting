@@ -1,4 +1,5 @@
 ﻿open canopy
+open FSharp.Data.Sql
 
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
@@ -7,6 +8,12 @@ pin FullScreen
 
 let email = "jstevens@uscarenet.com"
 let password = "History12!"
+let [<Literal>] ConnectionString = "Data Source=navsql;Initial Catalog=NavcareDB_Test4;Integrated Security=True; "
+type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
+
+let ctx = Sql.GetDataContext()
+
+
 
 "User Logins in, and sees the main navigation bar" &&& fun _ ->
     url "https://test4.navcare.com/people/?patientId=6174"
