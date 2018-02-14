@@ -12,27 +12,34 @@ let [<Literal>] ConnectionString = "Data Source=navsql;Initial Catalog=NavcareDB
 type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
 
 let ctx = Sql.GetDataContext()
+let baseUrl = "https://test.navcare.com/"
 
+let writeSlow str =
+    [0..String.length str - 1]
+    |> List.iter (fun i ->
+    press (str.[i].ToString())
+    sleep 0.2
+    )
 
 
 "Login to website" &&& fun _ ->
-    url "http://test4.navcare.com"
+    url baseUrl
     "#Email_I" << email
     "#Password_I" << password
     click "#SetPasswordSubmitImg"
     displayed "#mainNav"
 
 //-----------------------------------------------------------------
-
+    
     // Tab 1.) Load new CCM Patient (Not from enrollment tab)
 
 "1.) Navigate with search tab" &&& fun _ ->
     click "#mainNav > li:nth-child(2) > a"
     displayed "#PeopleSearchGrid"
-    on "https://localhost:44336/search"
+    on (baseUrl + "search")
 
 "2.) Select enroll new person" &&& fun _ ->
-    click "#headerBar > div > div > button" // add an id to new patient button... selector does not work sometimes
+    click """//*[@id="headerBar"]/div[2]/div/button[9]/span""" // Using Xpath because selector is unreliable
 
 "3.) Input patient facility information" &&& fun _ ->
     js """document.getElementById("mainFooter").remove()""" |> ignore
@@ -87,26 +94,17 @@ let ctx = Sql.GetDataContext()
 
 "11.) Input Language" &&& fun _ ->
     
-
     click "#demographicInformationForm > div.col-xs-12.padding-h-0.padding-top-10 > div > div:nth-child(3) > div > div:nth-child(2) > div > span > span > span"
     click "#languageDropdown-2"
     "#demographicInformationForm > div.col-xs-12.padding-h-0.padding-top-10 > div > div:nth-child(3) > div > div:nth-child(2) > div > span > span > input" != null
 
 "12.) Input phone numbers" &&& fun _ ->
 
-    let writeSlow selector str =
-        click selector
-        [0..String.length str - 1]
-        |> List.iter (fun i ->
-        press (str.[i].ToString())
-        sleep 0.2
-        )
-
     click "#demographicInformationForm > div:nth-child(9) > div > div:nth-child(3) > div > div:nth-child(2) > div > span > span > span"
     press down
     press enter
-
-    writeSlow "#demographicInformationForm > div:nth-child(9) > div > div:nth-child(3) > div > div:nth-child(3) > input" "8004003000" 
+    click "#demographicInformationForm > div:nth-child(9) > div > div:nth-child(3) > div > div:nth-child(3) > input"
+    writeSlow "8004003000" 
     //"#demographicInformationForm > div:nth-child(9) > div > div:nth-child(3) > div > div:nth-child(3) > input" << phoneNumber
     press enter
     "#demographicInformationForm > div:nth-child(9) > div > div:nth-child(3) > div > div:nth-child(2) > div > span > span > input" != null
@@ -196,7 +194,9 @@ let ctx = Sql.GetDataContext()
     click "#DemographicsForm > div.col-xs-12.padding-h-0.padding-top-10.padding-bottom-10 > div > input.btn.btn-sm.btn-success"
 
 "16.) Add new contact" &&& fun _ ->
+
     click "#Person-navitem-17"
+    sleep 4
     click "#ContactsGrid_add > a"
     "#ContactEditForm > div:nth-child(2) > div:nth-child(1) > div > span > span > input.e-maskedit.e-js.e-input" << "mark"
     "#ContactEditForm > div:nth-child(2) > div:nth-child(3) > div > span > span > input.e-maskedit.e-js.e-input" << "carroll"
@@ -206,6 +206,7 @@ let ctx = Sql.GetDataContext()
     click "#AddEditSubmit"
 
 "17.) Select social history and add data per EHR and save" &&& fun _ ->
+
     click "#Person-navitem-18"
 
     click "#ejControl_10_dropdown"
@@ -247,6 +248,7 @@ let ctx = Sql.GetDataContext()
 "19.) Select clinical summary and then select problem list" &&& fun _ ->
     sleep 3
     click "#Person-navitem-23"
+    sleep 3
     click "#Person-navitem-26"
 
 "20.) Add DX codes for patients" &&& fun _ ->
@@ -338,35 +340,22 @@ let ctx = Sql.GetDataContext()
     click "#VitalsGridView_DXEFL_DXCBtn1 > span"
 
 "26.) Select records and upload necessary documents" &&& fun _ ->
-    click "#Person-navitem-35"
-    click "#main > div > div > ul > li"
+    url (baseUrl + "people/?patientId=1#/people/_primarycarerecords")
+    click "#main > div > div.e-gridtoolbar.e-toolbar.e-js.e-widget.e-box.e-toolbarspan.e-tooltip > ul > li > a"
     "#TimeVisitId" << "5/5/2018"
     "#RecordTable > tbody > tr > td > div > div:nth-child(2) > div:nth-child(4) > div > input" << "test test test"
     "#Comments" << "test test test"
-    click "#RecordTable > tbody > tr > td > div > div:nth-child(2) > div:nth-child(6) > div.col-sm-2.col-md-2.col-lg-2 > label"
 
-    let writeSlow str =
-        [0..String.length str - 1]
-        |> List.iter (fun i ->
-        press (str.[i].ToString())
-        sleep 0.2
-        )
-
-    writeSlow "test document"
-    press enter
-    sleep 5 // manually uploading a test file, not allowed to save without file uploaded
+    "#UploadFile" << """C:\Users\jstevens\Downloads\test document.txt"""
     click "#Save"
-    sleep 3
 
 "27.) Select Enrollment to upload written consent" &&& fun _ ->
     click "#Person-navitem-64"
     click "#main > div > div.e-gridtoolbar.e-toolbar.e-js.e-widget.e-box.e-toolbarspan.e-tooltip > ul > li > a"
     "#RecordTable > tbody > tr > td > div > div:nth-child(2) > div:nth-child(2) > div > input" << "test test"
     "#Comments" << "test test"
-    click "#RecordTable > tbody > tr > td > div > div:nth-child(2) > div:nth-child(4) > div.col-sm-2.col-md-2.col-lg-2 > label"
-    sleep 5 // manually uploading a test file, not allowed to save without file uploaded
+    "#UploadFile" << """C:\Users\jstevens\Downloads\test document.txt"""
     click "#Save"
-    sleep 3
 
 "28.) select services and select CCM, start ccm services" &&& fun _ ->
     click "#Person-navitem-19"
