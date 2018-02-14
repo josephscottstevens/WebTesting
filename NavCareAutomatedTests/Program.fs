@@ -1,6 +1,9 @@
 ﻿open canopy
 open FSharp.Data.Sql
 
+optimizeBySkippingIFrameCheck <- true
+optimizeByDisablingCoverageReport <- true
+hideCommandPromptWindow <- true
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
 
@@ -196,7 +199,7 @@ let writeSlow str =
 "16.) Add new contact" &&& fun _ ->
 
     click "#Person-navitem-17"
-    sleep 4
+    sleep 2
     click "#ContactsGrid_add > a"
     "#ContactEditForm > div:nth-child(2) > div:nth-child(1) > div > span > span > input.e-maskedit.e-js.e-input" << "mark"
     "#ContactEditForm > div:nth-child(2) > div:nth-child(3) > div > span > span > input.e-maskedit.e-js.e-input" << "carroll"
@@ -257,7 +260,7 @@ let writeSlow str =
     click "#ejControl_19_popup > div > ul > li:nth-child(2)"
 
     "#ejControl_20" << "123"
-    sleep 5
+    sleep 3
     click "#A150"
     click "#ProblemStatus_dropdown"
     click "#ProblemStatus_popup > div > ul > li.e-active"
@@ -380,7 +383,7 @@ let writeSlow str =
 "32.) Assign task and save" &&& fun _->
     sleep 3
     click "#AddEditTaskSubmit_CD"
-    sleep 10
+    sleep 3
    
 //----------------------------------------------------------------------------------------------------------
 
