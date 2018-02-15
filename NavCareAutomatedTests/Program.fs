@@ -15,7 +15,11 @@ let [<Literal>] ConnectionString = "Data Source=navsql;Initial Catalog=NavcareDB
 type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
 
 let ctx = Sql.GetDataContext()
-let baseUrl = "https://test.navcare.com/"
+let baseUrl = "https://localhost:44336/"
+let filePath = """C:\Users\jstevens\Downloads\test document.txt"""
+
+let notLoading () =
+    (element "#_WaitingPopup").Displayed = false
 
 let writeSlow str =
     [0..String.length str - 1]
@@ -24,6 +28,11 @@ let writeSlow str =
     sleep 0.2
     )
 
+let urlTo urlPath =
+    url (baseUrl + urlPath)
+    waitFor notLoading
+    js """var x = document.getElementById("mainFooter"); if (x) x.remove(); """ |> ignore
+    sleep 0.1
 
 "Login to website" &&& fun _ ->
     url baseUrl
@@ -31,6 +40,7 @@ let writeSlow str =
     "#Password_I" << password
     click "#SetPasswordSubmitImg"
     displayed "#mainNav"
+
 
 //-----------------------------------------------------------------
     
@@ -198,9 +208,10 @@ let writeSlow str =
 
 "16.) Add new contact" &&& fun _ ->
 
-    click "#Person-navitem-17"
-    sleep 2
+    url (baseUrl + "people/?patientId=1#/people/_contacts")
+    waitFor notLoading
     click "#ContactsGrid_add > a"
+    waitFor notLoading
     "#ContactEditForm > div:nth-child(2) > div:nth-child(1) > div > span > span > input.e-maskedit.e-js.e-input" << "mark"
     "#ContactEditForm > div:nth-child(2) > div:nth-child(3) > div > span > span > input.e-maskedit.e-js.e-input" << "carroll"
     click "#ejControl_9_dropdown"
@@ -256,10 +267,10 @@ let writeSlow str =
 
 "20.) Add DX codes for patients" &&& fun _ ->
     click "#problemListGrid_add > a"
-    click "#ejControl_19_dropdown"
-    click "#ejControl_19_popup > div > ul > li:nth-child(2)"
+    click "#dropdownIcd_hidden"
+    click "#dropdownIcd_popup > div > ul > li:nth-child(2)"
 
-    "#ejControl_20" << "123"
+    "#inputIcdSearch" << "123"
     sleep 3
     click "#A150"
     click "#ProblemStatus_dropdown"
@@ -278,9 +289,11 @@ let writeSlow str =
     click "#selectedProblem > div:nth-child(6) > div > input.btn.btn-sm.btn-success.pull-right"
 
 "21.) Select medications and add data" &&& fun _ ->
-    sleep 3
-    click "#Person-navitem-27"
+
+    click "nav > ul > li > ul > li > a:contains('Medications')"
+    
     click "#medicationsGrid_add > a"
+    waitFor notLoading
 
     "#drugSearch" << "tyl"
     click "#selectedMedication > div.col-xs-12.padding-top-10.padding-right-0 > div:nth-child(8)"
@@ -288,8 +301,8 @@ let writeSlow str =
 
     "#txtSigText" << "test data test data test data test data"
 
-    click "#ejControl_26_dropdown"
-    click "#ejControl_26_popup > div.e-content > ul > li:nth-child(2)"
+    click "#dropdownPrescribedBy_hidden"
+    click "#dropdownPrescribedBy_popup > div.e-content > ul > li:nth-child(2)"
 
     "#selectedMedication > div:nth-child(2) > div:nth-child(1) > div:nth-child(4) > div > span > span > input" << "5/5/2018"
     "#selectedMedication > div:nth-child(2) > div:nth-child(1) > div:nth-child(5) > div > span > span > input" << "6/5/2018"
@@ -322,11 +335,12 @@ let writeSlow str =
     click "#btnUpdate > span"
 
 "23 & 24.) Select allergies, input data and update" &&& fun _ ->
-    click "#Person-navitem-31"
+    click "nav > ul > li > a:contains('Allergies')"
+
     click "#AllergiesGridView_DXCBtn0 > span"
     "#AllergiesGridView_DXEFL_DXEditor2_I" << "test data"
     "#AllergiesGridView_DXEFL_DXEditor3_I" << "test data"
-    click "#AllergiesGridView_DXEFL_DXCBtn1 > span"
+    click "span:contains('Update')"
 
 "25.) Select last known vitals, click new and add data" &&& fun _ ->
     click "#Person-navitem-32"
@@ -340,29 +354,29 @@ let writeSlow str =
     "#VitalsGridView_DXEFL_DXEditor5_I" << "50"
     "#VitalsGridView_DXEFL_DXEditor7_I" << "50"
     "#VitalsGridView_DXEFL_DXEditor9_I" << "50"
-    click "#VitalsGridView_DXEFL_DXCBtn1 > span"
+    click "span:contains('Update')"
 
 "26.) Select records and upload necessary documents" &&& fun _ ->
-    url (baseUrl + "people/?patientId=1#/people/_primarycarerecords")
-    click "#main > div > div.e-gridtoolbar.e-toolbar.e-js.e-widget.e-box.e-toolbarspan.e-tooltip > ul > li > a"
-    "#TimeVisitId" << "5/5/2018"
-    "#RecordTable > tbody > tr > td > div > div:nth-child(2) > div:nth-child(4) > div > input" << "test test test"
-    "#Comments" << "test test test"
+    click "nav > ul > li > a:contains('Records')"
+    click "#btnNewRecord.e-loaded"
 
-    "#UploadFile" << """C:\Users\jstevens\Downloads\test document.txt"""
+    "#TimeVisitId" << "5/5/2018"
+    "#DoctorofVisit" << "test doctor"
+    "#Comments" << "test comment"
+
+    "#UploadFile" << filePath
     click "#Save"
 
 "27.) Select Enrollment to upload written consent" &&& fun _ ->
     click "#Person-navitem-64"
-    click "#main > div > div.e-gridtoolbar.e-toolbar.e-js.e-widget.e-box.e-toolbarspan.e-tooltip > ul > li > a"
-    "#RecordTable > tbody > tr > td > div > div:nth-child(2) > div:nth-child(2) > div > input" << "test test"
+    click "#btnNewRecord.e-loaded"
+    "#Title" << "test test"
     "#Comments" << "test test"
-    "#UploadFile" << """C:\Users\jstevens\Downloads\test document.txt"""
+    "#UploadFile" << filePath
     click "#Save"
 
 "28.) select services and select CCM, start ccm services" &&& fun _ ->
-    click "#Person-navitem-19"
-    click "#Person-navitem-20"
+    click "nav > ul > li > a:contains('Services')"
     click "#CreateCCMButtonPatientPanel"
 
 "29.) Fill out CCM data and update" &&& fun _ ->
