@@ -15,7 +15,7 @@ let [<Literal>] ConnectionString = "Data Source=navsql;Initial Catalog=NavcareDB
 type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
 
 let ctx = Sql.GetDataContext()
-let baseUrl = "https://localhost:44336/"
+let baseUrl = "https://test4.navcare.com/"
 let filePath = """C:\Users\jstevens\Downloads\test document.txt"""
 
 let notLoading () =
@@ -200,8 +200,10 @@ let urlTo urlPath =
 "15.)  Save new patient" &&& fun _ ->
 
     "#PatientsFacilityIDNoId" << "12345"
-    "#FirstNameId" << "test"
-    "#LastNameId" << "patient"
+    click "#FirstNameId"
+    writeSlow "testFirstNameA"
+    click "#LastNameId"
+    writeSlow "testLastNameA"
     click "#SexatBirthId_dropdown"
     click "#\31"
     click "#DemographicsForm > div.col-xs-12.padding-h-0.padding-top-10.padding-bottom-10 > div > input.btn.btn-sm.btn-success"
@@ -209,9 +211,11 @@ let urlTo urlPath =
 "16.) Add new contact" &&& fun _ ->
 
     url (baseUrl + "people/?patientId=1#/people/_contacts")
+    js """var x = document.getElementById("mainFooter"); if (x) x.remove(); """ |> ignore
     waitFor notLoading
     click "#ContactsGrid_add > a"
     waitFor notLoading
+    sleep 3
     "#ContactEditForm > div:nth-child(2) > div:nth-child(1) > div > span > span > input.e-maskedit.e-js.e-input" << "mark"
     "#ContactEditForm > div:nth-child(2) > div:nth-child(3) > div > span > span > input.e-maskedit.e-js.e-input" << "carroll"
     click "#ejControl_9_dropdown"
@@ -249,7 +253,7 @@ let urlTo urlPath =
 "18.) Select insurance information, add data and save" &&& fun _ ->
 
     click "#Person-navitem-69"
-    
+    sleep 2
     click "#ejControl_15_dropdown"
     click "#ejControl_15_popup > div.e-content > ul > li:nth-child(5)"
     click "#ejControl_16_dropdown"
@@ -335,6 +339,8 @@ let urlTo urlPath =
     click "#btnUpdate > span"
 
 "23 & 24.) Select allergies, input data and update" &&& fun _ ->
+    click "nav > ul > li > a:contains('Clinical Summary')"
+    waitForElement "nav > ul > li > a:contains('Allergies')"
     click "nav > ul > li > a:contains('Allergies')"
 
     click "#AllergiesGridView_DXCBtn0 > span"
