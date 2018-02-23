@@ -28,12 +28,6 @@ let writeSlow str =
     sleep 0.2
     )
 
-let urlTo urlPath =
-    url (baseUrl + urlPath)
-    waitFor notLoading
-    js """var x = document.getElementById("mainFooter"); if (x) x.remove(); """ |> ignore
-    sleep 0.1
-
 "Login to website" &&& fun _ ->
     url baseUrl
     "#Email_I" << email
