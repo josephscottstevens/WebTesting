@@ -1,17 +1,14 @@
 ﻿open canopy
-open System
-open System.IO
 open FSharp.Data
 open FSharp.Data.Sql
 
-let [<Literal>] ConnectionString = "Data Source=localhost;Initial Catalog=NavcareDB_interface2;Integrated Security=True; "
-//let [<Literal>] ConnectionStringTest4 = "Data Source=sql01;Initial Catalog=Hr_Url_Tracking;Integrated Security=True; "
+//let [<Literal>] ConnectionString = "Data Source=localhost;Initial Catalog=NavcareDB_interface2;Integrated Security=True; "
+let [<Literal>] ConnectionString = "Data Source=sql01;Initial Catalog=Hr_Url_Tracking;Integrated Security=True; "
+//type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
 type Sql = SqlDataProvider<ConnectionString = ConnectionString, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
-//type SqlTest4 = SqlDataProvider<ConnectionString = ConnectionStringTest4, DatabaseVendor = Common.DatabaseProviderTypes.MSSQLSERVER, UseOptionTypes = true>
 
 let newUserId = System.Guid.NewGuid().ToString()
 let ctx = Sql.GetDataContext()
-//let ctxTest4 = SqlTest4.GetDataContext()
 
 let opportunities = new CsvProvider<"R:\IT\CognautoFiles\Output\Opportunities", HasHeaders=false>()
 let urls = opportunities.Rows |> Seq.toArray
@@ -44,26 +41,25 @@ lastly (fun _ ->
     let ctx = Sql.GetDataContext()
 
     // Delete all rows in table
-    //ctx.Dbo.HrOpportunityUrls
-    //|> Seq.toList
-    //|> List.map (fun t -> 
-    //    t.Delete()
-    //    ctx.SubmitUpdates()
-    //)
-    //|> ignore
-    ()
+    ctx.Dbo.HrOpportunityUrls
+    |> Seq.toList
+    |> List.map (fun t -> 
+        t.Delete()
+        ctx.SubmitUpdates()
+    )
+    |> ignore
             
 
     // Insert new rows
-    //skills
-    //|> List.map (fun (t,y ) -> 
-    //    let newUrl = ctx.Dbo.HrOpportunityUrls.Create() 
-    //    newUrl.OpportunityNumber <- t
-    //    newUrl.OpportunityUrl <- Some y   //optional field
-    //    ctx.SubmitUpdates()
-    //)
-    //|> ignore
-    ()
+    skills
+    |> List.map (fun (t,y ) -> 
+        let newUrl = ctx.Dbo.HrOpportunityUrls.Create() 
+        newUrl.OpportunityNumber <- t
+        newUrl.OpportunityUrl <- Some y   //optional field
+        ctx.SubmitUpdates()
+    )
+    |> ignore
+    
     //let allRows = 
         //skills
         //|> List.map (fun (t, y) -> t + "," + y)
