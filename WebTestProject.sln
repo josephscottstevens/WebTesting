@@ -11,6 +11,8 @@ Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "NavCareAutomatedTests", "Na
 EndProject
 Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "EmailCSV", "EmailCSV\EmailCSV.fsproj", "{82314B86-2F67-4ACC-8A5E-D18C27D35021}"
 EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "SkillChecking", "SkillChecking\SkillChecking.fsproj", "{79BAB9CA-52DC-4375-AB18-CBF88EE5608B}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -33,6 +35,10 @@ Global
 		{82314B86-2F67-4ACC-8A5E-D18C27D35021}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82314B86-2F67-4ACC-8A5E-D18C27D35021}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82314B86-2F67-4ACC-8A5E-D18C27D35021}.Release|Any CPU.Build.0 = Release|Any CPU
+		{79BAB9CA-52DC-4375-AB18-CBF88EE5608B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{79BAB9CA-52DC-4375-AB18-CBF88EE5608B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{79BAB9CA-52DC-4375-AB18-CBF88EE5608B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{79BAB9CA-52DC-4375-AB18-CBF88EE5608B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
