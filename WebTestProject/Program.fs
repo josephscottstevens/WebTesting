@@ -1,15 +1,15 @@
-﻿open Main
+﻿//open Main
 open canopy
-open Example
-open SkillChecking
-
+//open Example
+//open SkillChecking
+let x = 0
 
 //elementTimeout <- 2.0
 chromeDir <- __SOURCE_DIRECTORY__
 start chrome
 
 //runExample
-runSkillChecking
+//runSkillChecking
 //runDemographics
 
 run()
