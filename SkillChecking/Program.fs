@@ -39,36 +39,36 @@ many urls.Length (fun _ ->
 )
 
 lastly (fun _ ->
-    //let ctx = Sql.GetDataContext()
+    let ctx = Sql.GetDataContext()
 
     // Delete all rows in table
-    //ctx.Dbo.HrOpportunityUrls
-    //|> Seq.toList
-    //|> List.map (fun t -> 
-     //   t.Delete()
-       // ctx.SubmitUpdates()
-    //)
-   // |> ignore
+    ctx.Dbo.HrOpportunityUrls
+    |> Seq.toList
+    |> List.map (fun t -> 
+        t.Delete()
+        ctx.SubmitUpdates()
+    )
+    |> ignore
             
 
     // Insert new rows
-    //skills
-   // |> List.map (fun (t,y ) -> 
-   //     let newUrl = ctx.Dbo.HrOpportunityUrls.Create() 
-    //    newUrl.OpportunityNumber <- t
-    //    newUrl.OpportunityUrl <- Some y   //optional field
-   //     ctx.SubmitUpdates()
-   // )
-   // |> ignore
+    skills
+    |> List.map (fun (t,y ) -> 
+        let newUrl = ctx.Dbo.HrOpportunityUrls.Create() 
+        newUrl.OpportunityNumber <- t
+        newUrl.OpportunityUrl <- Some y   //optional field
+        ctx.SubmitUpdates()
+    )
+    |> ignore
     
-    let allRows = 
-        skills
-        |> List.map (fun (t, y) -> t + "," + y)
-        |> List.reduce(fun t y -> t + "\n" + y) 
+    //let allRows = 
+        //skills
+        //|> List.map (fun (t, y) -> t + "," + y)
+        //|> List.reduce(fun t y -> t + "\n" + y) 
 
         
 
-    System.IO.File.WriteAllText("C:\Cognauto\Automation Output\Ultiprofiles\OpportunitiesOutput.csv", allRows)
+    //System.IO.File.WriteAllText("C:\Cognauto\Automation Output\Ultiprofiles\OpportunitiesOutput.csv", allRows)
 )
     
 run()
